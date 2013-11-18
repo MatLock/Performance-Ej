@@ -19,20 +19,34 @@ public class DepartmentDAO {
 	}
 
 	public Department getByCode(String num) {
-//		Criteria criteria = SessionManager.getSession().createCriteria(Department.class);
-//		criteria.add(Restrictions.eq("number",num));
-//		return (Department) criteria.uniqueResult();
-	//	return (Department) session.get(Department.class, num);
 		Session session = SessionManager.getSession();
-		return (Department) session
-				.createQuery("SELECT name,dept_no FROM Department WHERE dept_no= :num")
-		        .setParameter("num",num);
+		return (Department) session.get(Department.class, num);
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Department> getAll() {
 		Session session = SessionManager.getSession();
 		return session.createCriteria(Department.class).list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<DetalleEmpleado> detallesEmpEnDepto(Department dpt) {
+
+		Session session = SessionManager.getSession();
+		return (List<DetalleEmpleado>) session
+				.createQuery(
+						"SELECT new unq.tpi.persistencia.performanceEj.daos.DetalleEmpleado(s.amount, e.firstName, e.lastName, t)  FROM Department d join d.employees e join e.salaries s join e.titles t where d = ? and s.to = '9999-01-01'")
+				.setEntity(0, dpt).list();
+
+	}
+	
+	public Double sumarSalarios(Department depto) {
+		Session session = SessionManager.getSession();
+		return (Double) session
+				.createQuery(
+						"SELECT sum(s.amount) FROM Department d join d.employees e join e.salaries s where d = ? and s.to = '9999-01-01'")
+				.setEntity(0, depto).uniqueResult();
+
 	}
 
 }

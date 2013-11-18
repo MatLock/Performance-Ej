@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import unq.tpi.persistencia.performanceEj.daos.DepartmentDAO;
+
 public class Department {
 	private String number;
 	private String name;
@@ -45,13 +47,14 @@ public class Department {
 	}
 
 	public Double getTotalSalaries() {
-		Double tot = 0D;
-
-		for (Employee e : this.employees) {
-			tot += e.getSalary();
-		}
-
-		return tot;
+//		Double tot = 0D;
+//
+//		for (Employee e : this.employees) {
+//			tot += e.getSalary();
+//		}
+//
+//		return tot;
+		return new DepartmentDAO().sumarSalarios(this);
 	}
 
 	public Employee getManager() {

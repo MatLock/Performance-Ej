@@ -1,6 +1,7 @@
 package unq.tpi.persistencia.performanceEj.servicios;
 
 import unq.tpi.persistencia.performanceEj.daos.DepartmentDAO;
+import unq.tpi.persistencia.performanceEj.daos.DetalleEmpleado;
 import unq.tpi.persistencia.performanceEj.model.Department;
 import unq.tpi.persistencia.performanceEj.model.Employee;
 
@@ -25,11 +26,11 @@ public class ListadoPagosPorDepto extends AbstractListado {
 		this.addColumn("Titulo");
 		this.addColumn("Monto");
 		this.newLine();
-
-		for (Employee e : depto.getEmployees()) {
-			this.addColumn(e.getFullName());
-			this.addColumn(e.getTitle());
-			this.addColumn(e.getSalary());
+		//for(Employee e : depto.getEmployees())
+		for (DetalleEmpleado e : new DepartmentDAO().detallesEmpEnDepto(depto)) {
+			this.addColumn(e.fullName);
+			this.addColumn(e.title);
+			this.addColumn(e.salario);
 			this.newLine();
 		}
 	}
